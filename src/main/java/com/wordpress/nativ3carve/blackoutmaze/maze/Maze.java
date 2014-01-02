@@ -25,13 +25,6 @@ public interface Maze {
 	public List<Direction> nextMoveCandidates();
 
 	/**
-	 * String representation of a path to current Location.
-	 * 
-	 * @return
-	 */
-	public String pathToCurrent();
-
-	/**
 	 * @return true iff the maze has been solved.
 	 */
 	public boolean solved();

@@ -1,11 +1,7 @@
 package com.wordpress.nativ3carve.blackoutmaze.ep;
 
 import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +22,7 @@ public class EPMaze implements Maze {
 		if (!(dir instanceof EPDirection)) {
 			throw new IllegalArgumentException("EPDirection required.");
 		}
-		EPLocation predecessor = currentLocation;
 		currentLocation = tracker.move((EPDirection) dir);
-		traceMap.put(currentLocation, predecessor);
 
 		++distance_measure;
 		if (distance_measure % BENCHMARK_DISTANCE == 0) {
@@ -54,11 +48,6 @@ public class EPMaze implements Maze {
 	}
 
 	@Override
-	public String pathToCurrent() {
-		return convert(getPath(currentLocation, new LinkedList<Location>()));
-	}
-
-	@Override
 	public boolean solved() {
 		return currentLocation.atEnd();
 	}
@@ -66,39 +55,22 @@ public class EPMaze implements Maze {
 	@Override
 	public String completionMessage() {
 		if (solved()) {
-			return currentLocation.getNote();
+			return currentLocation.locationString()
+					+ System.getProperty("line.separator")
+					+ currentLocation.getNote();
 		} else {
 			return "";
 		}
 	}
 
 	public EPMaze() {
-		traceMap = new HashMap<Location, Location>();
 		tracker = new EPLocationTracker();
 	}
 
 	private EPLocation currentLocation;
 	// Mapping of <current, predecessor>
-	private Map<Location, Location> traceMap;
 	private static final Logger logger = LoggerFactory.getLogger(EPMaze.class);
 	private static final int BENCHMARK_DISTANCE = 100;
 	private int distance_measure = 0;
 	private final EPLocationTracker tracker;
-
-	private Deque<Location> getPath(Location loc, Deque<Location> path) {
-		Location predecessor = traceMap.get(loc);
-		if (predecessor == null) {
-			return path;
-		}
-		path.add(predecessor);
-		return getPath(predecessor, path);
-	}
-
-	private String convert(Deque<Location> queue) {
-		StringBuilder sb = new StringBuilder();
-		while (!queue.isEmpty()) {
-			sb.append(queue.pollLast());
-		}
-		return sb.toString();
-	}
 }

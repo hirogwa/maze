@@ -12,7 +12,7 @@ public class MazeSolver {
 	public void execute(Maze maze) throws Exception {
 		maze.init();
 		if (solve(maze)) {
-			logger.info("Maze solved. Path: {}", maze.pathToCurrent());
+			logger.info("Maze solved.");
 			logger.info(maze.completionMessage());
 		} else {
 			logger.info("Maze not solvable.");
