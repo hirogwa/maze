@@ -1,4 +1,4 @@
 maze
 ====
-maze solver.
+maze solver.<br>
 http://www.epdeveloperchallenge.com/
